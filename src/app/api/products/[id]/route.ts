@@ -1,19 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { getDefaultUser } from '@/lib/defaultUser'
 
 export async function GET(
   _req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const session = await getServerSession(authOptions)
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: '로그인이 필요합니다.' }, { status: 401 })
-  }
+  const user = await getDefaultUser()
 
   const product = await prisma.product.findFirst({
-    where: { id: params.id, userId: session.user.id },
+    where: { id: params.id, userId: user.id },
   })
 
   if (!product) {

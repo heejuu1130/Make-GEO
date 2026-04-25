@@ -8,14 +8,9 @@ export default function LandingPage() {
       <nav className="border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <span className="text-xl font-bold text-brand-700">Geoify</span>
-          <div className="flex items-center gap-3">
-            <Link href="/login">
-              <Button variant="ghost" size="sm">로그인</Button>
-            </Link>
-            <Link href="/signup">
-              <Button size="sm">무료로 시작하기</Button>
-            </Link>
-          </div>
+          <Link href="/analyze">
+            <Button size="sm">바로 시작하기</Button>
+          </Link>
         </div>
       </nav>
 
@@ -33,15 +28,10 @@ export default function LandingPage() {
           ChatGPT, Perplexity, Claude 같은 AI 검색엔진이 내 상품을 정확히 이해하도록,<br />
           구조화 데이터·FAQ·JSON-LD를 자동으로 생성해드립니다.
         </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <Link href="/signup">
-            <Button size="lg">무료로 시작하기 →</Button>
-          </Link>
-          <Link href="/login">
-            <Button variant="secondary" size="lg">로그인</Button>
-          </Link>
-        </div>
-        <p className="mt-4 text-sm text-gray-400">무료 플랜 · 크레딧 3개 제공 · 카드 불필요</p>
+        <Link href="/analyze">
+          <Button size="lg">무료로 시작하기 →</Button>
+        </Link>
+        <p className="mt-4 text-sm text-gray-400">가입 없이 바로 사용 가능</p>
       </section>
 
       {/* 작동 방식 */}
@@ -51,8 +41,8 @@ export default function LandingPage() {
           <div className="grid sm:grid-cols-3 gap-8">
             {[
               { step: '01', title: 'URL 입력', desc: '분석할 상품 페이지 URL을 붙여넣으세요. 쿠팡·네이버·스마트스토어 모두 지원합니다.' },
-              { step: '02', title: 'AI 분석', desc: 'Firecrawl로 페이지를 크롤링하고 Claude AI가 카테고리별 맞춤 분석을 수행합니다.' },
-              { step: '03', title: '구조 데이터 생성', desc: 'AI 검색엔진 최적화된 설명, FAQ, JSON-LD 스키마를 즉시 다운로드하세요.' },
+              { step: '02', title: 'AI 분석', desc: 'Firecrawl로 페이지를 크롤링하고 Gemini AI가 카테고리별 맞춤 분석을 수행합니다.' },
+              { step: '03', title: '구조 데이터 생성', desc: 'AI 검색엔진 최적화된 설명, FAQ, JSON-LD 스키마를 즉시 복사하세요.' },
             ].map(({ step, title, desc }) => (
               <div key={step} className="bg-white rounded-xl p-6 shadow-sm">
                 <div className="text-3xl font-bold text-brand-200 mb-3">{step}</div>
@@ -86,41 +76,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 요금제 */}
-      <section className="bg-gray-50 py-20">
-        <div className="max-w-5xl mx-auto px-4">
-          <h2 className="text-2xl font-bold text-center text-gray-900 mb-12">요금제</h2>
-          <div className="grid sm:grid-cols-4 gap-4">
-            {[
-              { plan: 'Free', price: '0원', credits: 3, features: ['크레딧 3개', '모든 카테고리', 'JSON-LD 생성'] },
-              { plan: 'Starter', price: '29,000원', credits: 30, features: ['크레딧 30개', '모든 카테고리', 'JSON-LD 생성', '우선 처리'] },
-              { plan: 'Growth', price: '79,000원', credits: 100, features: ['크레딧 100개', '모든 카테고리', 'JSON-LD 생성', '우선 처리'], highlight: true },
-              { plan: 'Pro', price: '199,000원', credits: 300, features: ['크레딧 300개', '모든 카테고리', 'JSON-LD 생성', '우선 처리', '전용 지원'] },
-            ].map(({ plan, price, credits, features, highlight }) => (
-              <div key={plan} className={`card p-6 ${highlight ? 'ring-2 ring-brand-500' : ''}`}>
-                {highlight && <div className="text-xs font-bold text-brand-600 mb-2">인기</div>}
-                <div className="font-bold text-gray-900 text-lg mb-1">{plan}</div>
-                <div className="text-2xl font-bold text-gray-900 mb-1">{price}</div>
-                <div className="text-xs text-gray-400 mb-4">크레딧 {credits}개 / 월</div>
-                <ul className="space-y-1.5">
-                  {features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm text-gray-600">
-                      <span className="text-brand-500">✓</span> {f}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="py-20 text-center">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">지금 바로 시작해보세요</h2>
-        <p className="text-gray-500 mb-8">무료 플랜으로 크레딧 3개를 즉시 받고 AI 검색 최적화를 경험해보세요.</p>
-        <Link href="/signup">
-          <Button size="lg">무료로 시작하기 →</Button>
+        <p className="text-gray-500 mb-8">가입 없이 상품 URL만 입력하면 바로 AI 검색 최적화 데이터를 받을 수 있습니다.</p>
+        <Link href="/analyze">
+          <Button size="lg">분석 시작하기 →</Button>
         </Link>
       </section>
 
