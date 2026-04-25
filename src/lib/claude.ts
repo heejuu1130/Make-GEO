@@ -1,9 +1,9 @@
-import { GoogleGenerativeAI } from '@google/generative-ai'
+import Groq from 'groq-sdk'
 import { Category, AnalysisResult } from '@/types'
 import { getSystemPrompt } from './prompts'
 
 function getClient() {
-  return new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
+  return new Groq({ apiKey: process.env.GROQ_API_KEY })
 }
 
 export async function analyzeProduct(
@@ -20,13 +20,17 @@ export async function analyzeProduct(
 상품 페이지 내용:
 ${markdown.slice(0, 8000)}`
 
-  const model = getClient().getGenerativeModel({
-    model: 'gemini-2.0-flash',
-    systemInstruction: systemPrompt,
+  const response = await getClient().chat.completions.create({
+    model: 'llama-3.3-70b-versatile',
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userMessage },
+    ],
+    max_tokens: 4096,
+    temperature: 0.3,
   })
 
-  const result = await model.generateContent(userMessage)
-  const text = result.response.text()
+  const text = response.choices[0]?.message?.content ?? ''
 
   let parsed: {
     structuredData: AnalysisResult['structuredData']
