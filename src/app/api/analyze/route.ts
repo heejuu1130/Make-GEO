@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { waitUntil } from '@vercel/functions'
 import { prisma } from '@/lib/prisma'
 import { getDefaultUser } from '@/lib/defaultUser'
 import { crawlProductPage, calculateCredits } from '@/lib/firecrawl'
 import { analyzeProduct } from '@/lib/claude'
 import { z } from 'zod'
 import { Category } from '@/types'
+
+export const maxDuration = 60
 
 const schema = z.object({
   url: z.string().url(),
@@ -26,14 +29,12 @@ export async function POST(req: NextRequest) {
     data: { userId: user.id, url, category, status: 'analyzing' },
   })
 
-  runAnalysis(product.id, url, category, user.id).catch(
-    (err) => console.error('Analysis failed:', err)
-  )
+  waitUntil(runAnalysis(product.id, url, category))
 
   return NextResponse.json({ productId: product.id })
 }
 
-async function runAnalysis(productId: string, url: string, category: Category, userId: string) {
+async function runAnalysis(productId: string, url: string, category: Category) {
   try {
     const { markdown, imageUrls, title } = await crawlProductPage(url)
     const creditsRequired = calculateCredits(imageUrls.length)
